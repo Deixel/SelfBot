@@ -117,29 +117,24 @@ new Command("text",
 new Command("eval",
 	"Run some code",
 	function(message) {
-		if(message.author.id === "113310775887536128") {
-			var vm = require("vm");
-			var params = getParams(message.content).join(" ");
-			var benchmark = Date.now();
-			var result;
-			var context = {
-				message: message,
-				client: client,
-				console: console,
-				commands: commands
-			};
-			try {
-				result = vm.runInNewContext(params, context);
-			}
-			catch(error) {
-				result = error;
-			}
-			benchmark = Date.now() - benchmark;
-			client.sendMessage(message.channel, "```js\n" + params + "\n--------------------\n" + result + "\n--------------------\n" + "in " + benchmark + "ms```");
+		var vm = require("vm");
+		var params = getParams(message.content).join(" ");
+		var benchmark = Date.now();
+		var result;
+		var context = {
+			message: message,
+			client: client,
+			console: console,
+			commands: commands
+		};
+		try {
+			result = vm.runInNewContext(params, context);
 		}
-		else {
-			client.sendMessage(":no_entry: **Permission Denied** :no_entry:");
+		catch(error) {
+			result = error;
 		}
+		benchmark = Date.now() - benchmark;
+		client.updateMessage(message, "```js\n" + params + "\n--------------------\n" + result + "\n--------------------\n" + "in " + benchmark + "ms```");
 	},
 	true
 );
@@ -147,21 +142,17 @@ new Command("eval",
 new Command("cli",
 	"Run a terminal command",
 	function(message) {
-		if(message.author.id === "113310775887536128") {
-			var exec = require("child_process").exec;
-			var params = getParams(message.content).join(" ");
-			var benchmark = Date.now();
-			exec(params, {timeout: 5000}, function(error, stdout, stderr) {
-				if(error) {
-					console.error(error);
-				}
-				benchmark = Date.now() - benchmark;
-				client.sendMessage(message.channel, "```bash\n" + params + "\n--------------------\n" + stdout + stderr + "\n--------------------\nin " + benchmark + "ms```");
-			});
-		}
-		else {
-			client.sendMessage(":no_entry: **Permission Denied** :no_entry:");
-		}
+		var exec = require("child_process").exec;
+		var params = getParams(message.content).join(" ");
+		var benchmark = Date.now();
+		exec(params, {timeout: 5000}, function(error, stdout, stderr) {
+			if(error) {
+				console.error(error);
+			}
+			benchmark = Date.now() - benchmark;
+			client.updateMessage(message, "```bash\n" + params + "\n--------------------\n" + stdout + stderr + "\n--------------------\nin " + benchmark + "ms```");
+		});
+
 	},
 	true
 );
