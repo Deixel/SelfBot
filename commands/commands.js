@@ -161,6 +161,6 @@ new Command("lmgtfy",
 	"Generate a LMGTFY link",
 	function(message) {
 		var params = getParams(message.content).join("+");
-		client.updateMessage(message, "http://lmgtfy.com/?q=" + params);
+		client.updateMessage(message, "<http://lmgtfy.com/?q=" + params + ">");
 	}
 );
