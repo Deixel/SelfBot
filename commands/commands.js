@@ -164,3 +164,11 @@ new Command("lmgtfy",
 		client.updateMessage(message, "<http://lmgtfy.com/?q=" + params + ">");
 	}
 );
+
+new Command("isup",
+	"Check whether a site is down or not",
+	(message) => {
+		var params = getParams(message.content);
+		client.updateMessage(message, "http://www.isup.me/" + params);
+	}
+);
