@@ -95,21 +95,32 @@ new Command("text",
 			});
 		}
 		else if(params.length > 0) {
-			connection.query("SELECT contents FROM quicktext WHERE alias = ?", params[0], function(err, rows) {
-				if(err) {
-					console.error(err);
-				}
-				if(rows.length == 0) {
-					client.updateMessage(message, "404: Message not found.");
-				}
-				else {
-					client.updateMessage(message, rows[0].contents);
-				}
-				//Pretty much only used for testing
-				if(cb != null)	{
-					cb();
-				}
-			});
+			if(params[0] === "add") {
+				params.shift();
+				var newText = {};
+				newText.alias = params.shift();
+				newText.contents = params.join(" ");
+				connection.query("INSERT INTO quicktext SET ?", newText, (err) => {
+					if(err) return console.error(err);
+				});
+			}
+			else {
+				connection.query("SELECT contents FROM quicktext WHERE alias = ?", params[0], function(err, rows) {
+					if(err) {
+						console.error(err);
+					}
+					if(rows.length == 0) {
+						client.updateMessage(message, "404: Message not found.");
+					}
+					else {
+						client.updateMessage(message, rows[0].contents);
+					}
+					//Pretty much only used for testing
+					if(cb != null)	{
+						cb();
+					}
+				});
+			}
 		}
 	}
 );
