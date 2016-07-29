@@ -38,7 +38,7 @@ function getParams(content) {
 new Command("ping",
 	"It's like ping-pong, but with words.",
 	function(message) {
-		client.updateMessage(message, "ponging in `" + Date.now() - message.timestamp +"`ms");
+		client.updateMessage(message, "ponging in `" + (Date.now() - message.timestamp) +"`ms");
 	}
 );
 
