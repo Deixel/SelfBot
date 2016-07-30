@@ -194,3 +194,20 @@ new Command("prune",
 		});
 	}
 );
+
+new Command("sc",
+	"Insert a shortcut text",
+	(message) => {
+		var shortcuts = {
+			"lenny": "( ͡° ͜ʖ ͡°)",
+			"shrug": "¯\\_(ツ)_/¯",
+			"justright": "✋😩👌",
+			"tableflip": "(╯°□°）╯︵ ┻━┻",
+			"unflip": "┬──┬﻿ ノ( ゜-゜ノ)"
+		};
+		var params = getParams(message.content);
+		if(shortcuts[params[0]]) {
+			client.updateMessage(message, shortcuts[params[0]]);
+		}
+	}
+);
