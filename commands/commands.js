@@ -188,7 +188,7 @@ new Command("prune",
 	"Remove the last X messages I sent",
 	(message) => {
 		var params = getParams(message.content);
-		client.getChannelLog(message.channel, (err, msgs) => {
+		client.getChannelLogs(message.channel, (err, msgs) => {
 			var myMsgs = msgs.filter(m => m.author.equals(client.user)).slice(0, params[0]);
 			myMsgs.map(m => client.deleteMessage(m));
 		});
