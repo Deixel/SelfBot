@@ -8,7 +8,7 @@ module.exports = {
 			"tableflip": "(╯°□°）╯︵ ┻━┻",
 			"unflip": "┬──┬﻿ ノ( ゜-゜ノ)"
 		};
-		if(shortcuts(params[0])) {
+		if(shortcuts[params[0]]) {
 			client.updateMessage(message, shortcuts[params[0]]);
 		}
 	}
