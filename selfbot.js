@@ -12,19 +12,14 @@ commands.load = {
 	description: "Load a command",
 	hidden: true,
 	action: (client, message, params) => {
-		if(message.author.id == appConfig.ownerid) {
-			try {
-				commands[params[0]] = require("./commands/" + params[0] + ".js");
-				client.updateMessage(message, "Successfully loaded " + params[0]);
-				log.info("Loaded " + params[0]);
-			}
-			catch(err) {
-				client.updateMessage(message, "Failed to load " + params[0]);
-				log.error(err);
-			}
+		try {
+			commands[params[0]] = require("./commands/" + params[0] + ".js");
+			client.updateMessage(message, "Successfully loaded " + params[0]);
+			log.info("Loaded " + params[0]);
 		}
-		else {
-			client.updateMessage(message, ":no_entry: **Permission Denied** :no_entry:");
+		catch(err) {
+			client.updateMessage(message, "Failed to load " + params[0]);
+			log.error(err);
 		}
 	}
 };
@@ -34,20 +29,15 @@ commands.unload = {
 	description: "Unload a command",
 	hidden: true,
 	action:  (client, message, params) => {
-		if(message.author.id == appConfig.ownerid) {
-			try {
-				delete commands[params[0]];
-				delete require.cache[require.resolve("./commands/" + params[0] + ".js")];
-				client.updateMessage(message, "Successfully unloaded " + params[0]);
-				log.info("Unloaded " + params[0]);
-			}
-			catch(err) {
-				client.updateMessage(message, "Failed to unload " + params[0]);
-				log.error(err);
-			}
+		try {
+			delete commands[params[0]];
+			delete require.cache[require.resolve("./commands/" + params[0] + ".js")];
+			client.updateMessage(message, "Successfully unloaded " + params[0]);
+			log.info("Unloaded " + params[0]);
 		}
-		else {
-			client.updateMessage(message, ":no_entry: **Permission Denied** :no_entry:");
+		catch(err) {
+			client.updateMessage(message, "Failed to unload " + params[0]);
+			log.error(err);
 		}
 	}
 };
@@ -57,22 +47,18 @@ commands.reload = {
 	description: "Reload a command",
 	hidden: true,
 	action: (client, message, params) => {
-		if(message.author.id == appConfig.ownerid) {
-			// commands.unload.action(client, message, params);
-			// commands.load.action(client, message, params);
-			try {
-				delete commands[params[0]];
-				delete require.cache[require.resolve("./commands/" + params[0] + ".js")];
-				commands[params[0]] = require("./commands/" + params[0] + ".js");
-				client.updateMessage(message, "Successfully reloaded " + params[0]);
-				log.info("Reloaded " + params[0]);
-			}
-			catch(err) {
-				client.updateMessage(message, "Failed to reload " + params[0]);
-				log.error(err);
-			}
-
+		try {
+			delete commands[params[0]];
+			delete require.cache[require.resolve("./commands/" + params[0] + ".js")];
+			commands[params[0]] = require("./commands/" + params[0] + ".js");
+			client.updateMessage(message, "Successfully reloaded " + params[0]);
+			log.info("Reloaded " + params[0]);
 		}
+		catch(err) {
+			client.updateMessage(message, "Failed to reload " + params[0]);
+			log.error(err);
+		}
+
 	}
 };
 
