@@ -15,16 +15,16 @@ commands.load = {
 		if(message.author.id == appConfig.ownerid) {
 			try {
 				commands[params[0]] = require("./commands/" + params[0] + ".js");
-				client.sendMessage(message.channel, "Successfully loaded " + params[0]);
+				client.updateMessage(message, "Successfully loaded " + params[0]);
 				log.info("Loaded " + params[0]);
 			}
 			catch(err) {
-				client.sendMessage(message.channel, "Failed to load " + params[0]);
+				client.updateMessage(message, "Failed to load " + params[0]);
 				log.error(err);
 			}
 		}
 		else {
-			client.sendMessage(message.channel, ":no_entry: **Permission Denied** :no_entry:");
+			client.updateMessage(message, ":no_entry: **Permission Denied** :no_entry:");
 		}
 	}
 };
@@ -38,16 +38,16 @@ commands.unload = {
 			try {
 				delete commands[params[0]];
 				delete require.cache[require.resolve("./commands/" + params[0] + ".js")];
-				client.sendMessage(message.channel, "Successfully unloaded " + params[0]);
+				client.updateMessage(message, "Successfully unloaded " + params[0]);
 				log.info("Unloaded " + params[0]);
 			}
 			catch(err) {
-				client.sendMessage(message.channel, "Failed to unload " + params[0]);
+				client.updateMessage(message, "Failed to unload " + params[0]);
 				log.error(err);
 			}
 		}
 		else {
-			client.sendMessage(message.channel, ":no_entry: **Permission Denied** :no_entry:");
+			client.updateMessage(message, ":no_entry: **Permission Denied** :no_entry:");
 		}
 	}
 };
@@ -64,11 +64,11 @@ commands.reload = {
 				delete commands[params[0]];
 				delete require.cache[require.resolve("./commands/" + params[0] + ".js")];
 				commands[params[0]] = require("./commands/" + params[0] + ".js");
-				client.sendMessage(message.channel, "Successfully reloaded " + params[0]);
+				client.updateMessage(message, "Successfully reloaded " + params[0]);
 				log.info("Reloaded " + params[0]);
 			}
 			catch(err) {
-				client.sendMessage(message.channel, "Failed to reload " + params[0]);
+				client.updateMessage(message, "Failed to reload " + params[0]);
 				log.error(err);
 			}
 
