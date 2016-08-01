@@ -76,6 +76,7 @@ commands.reload = {
 	}
 };
 
+function loadCommands() {
 	var fs = require("fs");
 	var files = fs.readdirSync("./commands");
 	var loaded = 0;
@@ -135,4 +136,4 @@ client.on("ready", () => {
 
 process.on("SIGINT", () => process.exit(0));
 
-client.loginWithToken(appConfig.apikey, (err) => if(err) log.error(err));
+client.loginWithToken(appConfig.apikey, (err) => { if(err) log.error(err); });
