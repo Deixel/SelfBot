@@ -2,7 +2,7 @@ module.exports = {
 	alias: "hs",
 	action: (client, message, params) => {
 		if(params.length > 0) {
-			client.updateMessage(message.channel, "Loading...", function(err, msg) {
+			client.updateMessage(message, "Loading...", function(err, msg) {
 				var player = params.join("_");
 				var http = require("http");
 				http.get("http://services.runescape.com/m=hiscore/index_lite.ws?player=" + player, function(res) {
@@ -25,6 +25,6 @@ module.exports = {
 				});
 			});
 		}
-		else client.reply(message, "You need to specify a player!");
+		else client.updateMessage(message, "You need to specify a player!");
 	}
 };

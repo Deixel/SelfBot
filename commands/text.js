@@ -12,7 +12,7 @@ module.exports = {
 				for(var i = 0; i < rows.length; i++) {
 					textList = textList.concat(rows[i].alias + " ");
 				}
-				client.updateMessage(message.channel, textList);
+				client.updateMessage(message, textList);
 			});
 		}
 		else if(params.length > 0) {
@@ -23,7 +23,7 @@ module.exports = {
 				newText.contents = params.join(" ");
 				connection.query("INSERT INTO quicktext SET ?", newText, (err) => {
 					if(err) return console.error(err);
-				});	
+				});
 			}
 			else {
 				connection.query("SELECT contents FROM quicktext WHERE alias = ?", params[0], function(err, rows) {
@@ -31,10 +31,10 @@ module.exports = {
 						return log.error(err);
 					}
 					if(rows.length == 0) {
-						client.updateMessage(message.channel, "404: Message not found.");
+						client.updateMessage(message, "404: Message not found.");
 					}
 					else {
-						client.updateMessage(message.channel, rows[0].contents);
+						client.updateMessage(message, rows[0].contents);
 					}
 				});
 			}
