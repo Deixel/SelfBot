@@ -12,7 +12,7 @@ module.exports = {
 				return log.error(error);
 			}
 			benchmark = Date.now() - benchmark;
-			client.updateMessage(message.channel, "```bash\n" + params + "\n--------------------\n" + stdout + stderr + "\n--------------------\nin " + benchmark + "ms```");
+			client.updateMessage(message, "```bash\n" + params + "\n--------------------\n" + stdout + stderr + "\n--------------------\nin " + benchmark + "ms```");
 		});
 	}
 };

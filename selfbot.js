@@ -86,6 +86,7 @@ function getParams(content) {
 
 function db_connect() {
 	connection = mysql.createConnection(appConfig.mysql);
+	config.connection = connection;
 	connection.connect(function(err) {
 		if(err) {
 			log.error(err);
@@ -108,6 +109,7 @@ client.on("message", (message) => {
 	if(message.author.equals(client.user)) {
 		var cmd = commands[message.content.split(" ")[0]];
 		if(cmd != null) {
+			log.info("Running " + message.content);
 			cmd.action(client, message, getParams(message.content), config);
 		}
 	}

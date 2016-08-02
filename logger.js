@@ -18,7 +18,7 @@ module.exports = new winston.Logger ({
 				return dateFormat(now, "yyyy-mm-dd HH:MM:ss");
 			},
 			level: "info",
-			filename: "./logs/deixbot.log",
+			filename: "./logs/selfbot.log",
 			maxSize: 100000,
 			maxFiles: 10,
 			json: false,
