@@ -125,7 +125,7 @@ client.on("message", (message) => {
 			cmd.action(client, message, getParams(message.content), config);
 		}
 	}
-	else if(config.afk && message.isMentioned(client.user) && !message.everyoneMentioned) {
+	if(config.afk && message.isMentioned(client.user) && !message.everyoneMentioned) {
 		//Send notification to IFTTT
 		log.info("Sent AFK Mention from " + message.author.username);
 		let http = require("https");
