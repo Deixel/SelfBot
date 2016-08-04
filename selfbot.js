@@ -62,6 +62,17 @@ commands.reload = {
 	}
 };
 
+
+commands.listcmds = {
+	alias: "listcmds",
+	description: "List all loaded commands",
+	hidden: true,
+	action: (client, message) => {
+		var cmdlist = Object.keys(commands);
+		client.sendMessage(message.channel, cmdlist);
+	}
+};
+
 function loadCommands() {
 	var fs = require("fs");
 	var files = fs.readdirSync("./commands");

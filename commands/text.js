@@ -23,6 +23,7 @@ module.exports = {
 				newText.contents = params.join(" ");
 				connection.query("INSERT INTO quicktext SET ?", newText, (err) => {
 					if(err) return console.error(err);
+					client.updateMessage(message, "Added `" + newText.alias + "`", (err, message) => client.deleteMessage(message, {wait: 2000}) );
 				});
 			}
 			else {
