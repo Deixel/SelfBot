@@ -144,7 +144,7 @@ client.on("message", (message) => {
 			req.on("error", (err) => log.error(err));
 		});
 	}
-	else if(config.afk && !message.server) {
+	else if(config.afk && !message.server && !message.author.equals(client.user)) {
 		log.info("Sent AFK DM from " + message.author.username);
 		let http = require("https");
 		let payload = {
