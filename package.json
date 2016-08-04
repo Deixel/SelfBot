@@ -1,0 +1,25 @@
+{
+  "name": "selfbot",
+  "version": "1.0.0",
+  "description": "Deixel's SelfBot",
+  "main": "selfbot.js",
+  "dependencies": {
+	  "discord.js":  "latest",
+	  "winston": "latest",
+	  "dateformat": "latest",
+	  "mysql": "latest",
+  }
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Deixel/SelfBot.git"
+  },
+  "author": "Deixel",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Deixel/SelfBot/issues"
+  },
+  "homepage": "https://github.com/Deixel/SelfBot#readme"
+}

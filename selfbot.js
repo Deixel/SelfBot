@@ -3,6 +3,7 @@ var mysql = require("mysql");
 var log = require("./logger.js");
 var config =  require("./config");
 var appConfig = config.appConfig;
+config.afk = false;
 
 var connection;
 var commands = {};
@@ -123,6 +124,43 @@ client.on("message", (message) => {
 			log.info("Running " + message.content);
 			cmd.action(client, message, getParams(message.content), config);
 		}
+	}
+	else if(config.afk && message.isMentioned(client.user) && !message.everyoneMentioned) {
+		//Send notification to IFTTT
+		log.info("Sent AFK Mention from " + message.author.username);
+		let http = require("https");
+		let payload = {
+			value1: message.author.username,
+			value2: message.channel.name
+		};
+		let options = {
+			host: "maker.ifttt.com",
+			port: 443,
+			path: "/trigger/discord_mention/with/key/" + config.iftttkey,
+			method: "POST",
+			body: JSON.stringify(payload)
+		};
+		let req = http.request(options, () => {
+			req.on("error", (err) => log.error(err));
+		});
+	}
+	else if(config.afk && !message.server) {
+		log.info("Sent AFK DM from " + message.author.username);
+		let http = require("https");
+		let payload = {
+			value1: message.author.username,
+			value2: message.cleanContent
+		};
+		let options = {
+			host: "maker.ifttt.com",
+			port: 443,
+			path: "/trigger/discord_dm/with/key/" + config.iftttkey,
+			method: "POST",
+			body: JSON.stringify(payload)
+		};
+		let req = http.request(options, () => {
+			req.on("error", (err) => log.error(err));
+		});
 	}
 });
 
