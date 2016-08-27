@@ -12,7 +12,7 @@ module.exports = {
 				for(var i = 0; i < rows.length; i++) {
 					textList = textList.concat(rows[i].alias + " ");
 				}
-				client.updateMessage(message, textList);
+				client.updateMessage(message, textList, (err, message) => client.deleteMessage(message, {wait: 5000}));
 			});
 		}
 		else if(params.length > 0) {

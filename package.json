@@ -4,11 +4,12 @@
   "description": "Deixel's SelfBot",
   "main": "selfbot.js",
   "dependencies": {
-	  "discord.js":  "latest",
-	  "winston": "latest",
-	  "dateformat": "latest",
-	  "mysql": "latest",
-  }
+    "dateformat": "latest",
+    "discord.js": "latest",
+    "mysql": "latest",
+    "request": "^2.74.0",
+    "winston": "latest"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

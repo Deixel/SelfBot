@@ -128,39 +128,23 @@ client.on("message", (message) => {
 	if(config.afk && message.isMentioned(client.user) && !message.everyoneMentioned) {
 		//Send notification to IFTTT
 		log.info("Sent AFK Mention from " + message.author.username);
-		let http = require("https");
-		let payload = {
-			value1: message.author.username,
-			value2: message.channel.name
-		};
+		let request = require("request");
 		let options = {
-			host: "maker.ifttt.com",
-			port: 443,
-			path: "/trigger/discord_mention/with/key/" + config.iftttkey,
+			url: "https://maker.ifttt.com/trigger/discord_mention/with/key/" + appConfig.iftttkey,
 			method: "POST",
-			body: JSON.stringify(payload)
+			qs: { "value1": message.author.username, "value2": message.channel.name }
 		};
-		let req = http.request(options, () => {
-			req.on("error", (err) => log.error(err));
-		});
+		request(options, (err) => {if(err) log.error(err)});
 	}
 	else if(config.afk && !message.server && !message.author.equals(client.user)) {
 		log.info("Sent AFK DM from " + message.author.username);
-		let http = require("https");
-		let payload = {
-			value1: message.author.username,
-			value2: message.cleanContent
-		};
+		let request = require("request");
 		let options = {
-			host: "maker.ifttt.com",
-			port: 443,
-			path: "/trigger/discord_dm/with/key/" + config.iftttkey,
+			url: "https://maker.ifttt.com/trigger/discord_dm/with/key/" + appConfig.iftttkey,
 			method: "POST",
-			body: JSON.stringify(payload)
+			qs: { "value1": message.author.username, "value2": message.cleanContent }
 		};
-		let req = http.request(options, () => {
-			req.on("error", (err) => log.error(err));
-		});
+		request(options, (err) => {if(err) log.error(err)});
 	}
 });
 
