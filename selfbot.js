@@ -4,6 +4,7 @@ var log = require("./logger.js");
 var config =  require("./config");
 var appConfig = config.appConfig;
 config.afk = false;
+var afkTimeout;
 
 var connection;
 var commands = {};
@@ -104,6 +105,7 @@ function db_connect() {
 			log.error(err);
 			setTimeout(db_connect, 2000);
 		}
+		else log.info("Connected to database");
 	});
 	connection.on("error", function(err) {
 		if(err.code === "PROTOCOL_CONNECTION_LOST") {
@@ -119,6 +121,11 @@ var client = new Discord.Client({autoReconnect: true});
 
 client.on("message", (message) => {
 	if(message.author.equals(client.user)) {
+		if(config.afk) config.afk = false;
+		else {
+			clearTimeout(afkTimeout);
+			afkTimeout = setTimeout(setAfk, 30000);
+		}
 		var cmd = commands[message.content.split(" ")[0]];
 		if(cmd != null) {
 			log.info("Running " + message.content);
@@ -149,12 +156,16 @@ client.on("message", (message) => {
 });
 
 client.on("ready", () => {
-	log.info("Logged in successfully");
-	db_connect();
-	log.info("Established connection to database");
-	loadCommands();
+	afkTimeout = setTimeout(setAfk, 30000);
+	log.info("Client emitted READY");
 });
+
+function setAfk() {
+	config.afk = true;
+}
 
 process.on("SIGINT", () => process.exit(0));
 
-client.loginWithToken(appConfig.apikey, (err) => { if(err) log.error(err); });
+db_connect();
+loadCommands();
+client.loginWithToken(appConfig.apikey, (err) => { if(err) log.error(err); log.info("Logged in with token"); });
