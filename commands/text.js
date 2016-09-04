@@ -12,7 +12,7 @@ module.exports = {
 				for(var i = 0; i < rows.length; i++) {
 					textList = textList.concat(rows[i].alias + " ");
 				}
-				client.updateMessage(message, textList, (err, message) => client.deleteMessage(message, {wait: 5000}));
+				message.edit(textList).then(msg => msg.delete(5000));
 			});
 		}
 		else if(params.length > 0) {
@@ -23,7 +23,7 @@ module.exports = {
 				newText.contents = params.join(" ");
 				connection.query("INSERT INTO quicktext SET ?", newText, (err) => {
 					if(err) return console.error(err);
-					client.updateMessage(message, "Added `" + newText.alias + "`", (err, message) => client.deleteMessage(message, {wait: 5000}) );
+					message.edit(`Added \`${newText.alias}\``).then(msg => msg.delete(5000));
 				});
 			}
 			else {
@@ -31,12 +31,7 @@ module.exports = {
 					if(err) {
 						return log.error(err);
 					}
-					if(rows.length == 0) {
-						client.updateMessage(message, "404: Message not found.");
-					}
-					else {
-						client.updateMessage(message, rows[0].contents);
-					}
+					message.edit(rows.length == 0 ? "404: Message not found" : rows[0].contents);
 				});
 			}
 		}

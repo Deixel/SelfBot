@@ -18,6 +18,6 @@ module.exports = {
 			result = error;
 		}
 		benchmark = Date.now() - benchmark;
-		client.updateMessage(message, "```js\n" + params + "\n--------------------\n" + result + "\n--------------------\n" + "in " + benchmark + "ms```");
+		message.edit("```js\n" + params + "\n--------------------\n" + result + "\n--------------------\n" + "in " + benchmark + "ms```");
 	}
 };

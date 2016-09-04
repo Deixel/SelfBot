@@ -2,7 +2,7 @@ module.exports = {
 	alias: "hs",
 	action: (client, message, params) => {
 		if(params.length > 0) {
-			client.updateMessage(message, "Loading...", function(err, msg) {
+			message.edit("Loading...").then((err, msg) => {
 				var player = params.join("_");
 				var http = require("http");
 				http.get("http://services.runescape.com/m=hiscore/index_lite.ws?player=" + player, function(res) {
@@ -20,11 +20,11 @@ module.exports = {
 							var sTemp = skillRaw[i].split(",");
 							output = output.concat(skillNames[i] + ": " + sTemp[2] + " (" + sTemp[1] + ")\n");
 						}
-						client.updateMessage(msg, "**" + player + "'s Skills**\n```Javascript\n" + output + "```");
+						msg.edit(`** ${player}'s Skills**\n\`\`\`Javascript\n" + ${output} + "\`\`\``);
 					});
 				});
 			});
 		}
-		else client.updateMessage(message, "You need to specify a player!");
+		else message.edit("You need to specify a player!");
 	}
 };

@@ -4,12 +4,12 @@ module.exports = {
 	action: (client, message, params, config) => {
 		if(config.afk) {
 			config.afk = false;
-			client.updateMessage(message, "No longer AFK", (err, msg) => client.deleteMessage(msg, {wait: 2000}));
+			message.edit("No longer AFK").then(msg => msg.delete(2000)).catch(log.error);
 			log.info("AFK mode off");
 		}
 		else {
 			config.afk = true;
-			client.updateMessage(message, "AFK", (err, msg) => client.deleteMessage(msg, {wait: 2000}));
+			message.edit("AFK").then(msg => msg.delete(2000)).catch(log.error);
 			log.info("AFK mode on");
 		}
 	}

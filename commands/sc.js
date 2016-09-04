@@ -9,7 +9,7 @@ module.exports = {
 			"unflip": "┬──┬﻿ ノ( ゜-゜ノ)"
 		};
 		if(shortcuts[params[0]]) {
-			client.updateMessage(message, shortcuts[params[0]]);
+			message.edit(shortcuts[params[0]]);
 		}
 	}
 };

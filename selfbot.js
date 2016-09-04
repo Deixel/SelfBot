@@ -170,4 +170,4 @@ process.on("SIGINT", () => process.exit(0));
 
 db_connect();
 loadCommands();
-client.login(appConfig.apikey).then(() => log.info("Logged in with token")).catch(log.error);
+client.login(appConfig.apikey).then(() => log.info("Logged in with token"), error => (log.error(error)));
