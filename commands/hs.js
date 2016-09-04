@@ -20,7 +20,7 @@ module.exports = {
 							var sTemp = skillRaw[i].split(",");
 							output = output.concat(skillNames[i] + ": " + sTemp[2] + " (" + sTemp[1] + ")\n");
 						}
-						msg.edit(`** ${player}'s Skills**\n\`\`\`Javascript\n" + ${output} + "\`\`\``);
+						msg.edit(`** ${player}'s Skills**\n\`\`\`Javascript\n" ${output}\`\`\``);
 					});
 				});
 			});
