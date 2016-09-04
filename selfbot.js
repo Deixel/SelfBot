@@ -129,7 +129,7 @@ client.on("message", (message) => {
 			cmd.action(client, message, getParams(message.content), config);
 		}
 	}
-	if(config.afk && message.mentions.users.exists(client.user.id)) {
+	if(config.afk && message.mentions.users.exists("id", client.user.id)) {
 		//Send notification to IFTTT
 		log.info("Sent AFK Mention from " + message.author.username);
 		let request = require("request");
