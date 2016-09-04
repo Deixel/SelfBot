@@ -89,7 +89,7 @@ function loadCommands() {
 }
 
 function getParams(content) {
-	var params = content.split(" ");	
+	var params = content.split(" ");
 	params.shift();
 	return params;
 }
@@ -122,7 +122,6 @@ client.on("message", (message) => {
 		else {
 			clearTimeout(afkTimeout);
 		}
-
 		afkTimeout = setTimeout(setAfk, afkTime);
 		var cmd = commands[message.content.split(" ")[0]];
 		if(cmd != null) {
@@ -130,7 +129,7 @@ client.on("message", (message) => {
 			cmd.action(client, message, getParams(message.content), config);
 		}
 	}
-	if(config.afk && message.isMentioned(client.user) && !message.everyoneMentioned) {
+	if(config.afk && message.mentions.users.exists(client.user.id)) {
 		//Send notification to IFTTT
 		log.info("Sent AFK Mention from " + message.author.username);
 		let request = require("request");
@@ -141,7 +140,7 @@ client.on("message", (message) => {
 		};
 		request(options, (err) => {if(err) log.error(err);});
 	}
-	else if(config.afk && !message.server && !message.author.equals(client.user)) {
+	else if(config.afk && !message.guild && !message.author.id ===client.user) {
 		log.info("Sent AFK DM from " + message.author.username);
 		let request = require("request");
 		let options = {
