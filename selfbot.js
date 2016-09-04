@@ -17,11 +17,11 @@ commands.load = {
 	action: (client, message, params) => {
 		try {
 			commands[params[0]] = require("./commands/" + params[0] + ".js");
-			client.updateMessage(message, "Successfully loaded " + params[0]);
+			message.edit(`Sucessfully loaded ${params[0]}`);
 			log.info("Loaded " + params[0]);
 		}
 		catch(err) {
-			client.updateMessage(message, "Failed to load " + params[0]);
+			message.edit(`Failed to load ${params[0]}`);
 			log.error(err);
 		}
 	}
@@ -35,11 +35,11 @@ commands.unload = {
 		try {
 			delete commands[params[0]];
 			delete require.cache[require.resolve("./commands/" + params[0] + ".js")];
-			client.updateMessage(message, "Successfully unloaded " + params[0]);
+			message.edit(`Successfully unloaded ${params[0]}`);
 			log.info("Unloaded " + params[0]);
 		}
 		catch(err) {
-			client.updateMessage(message, "Failed to unload " + params[0]);
+			message.edit(`Failed to unload ${params[0]}`);
 			log.error(err);
 		}
 	}
@@ -54,17 +54,16 @@ commands.reload = {
 			delete commands[params[0]];
 			delete require.cache[require.resolve("./commands/" + params[0] + ".js")];
 			commands[params[0]] = require("./commands/" + params[0] + ".js");
-			client.updateMessage(message, "Successfully reloaded " + params[0]);
+			message.edit(`Successfully reloaded ${params[0]}`);
 			log.info("Reloaded " + params[0]);
 		}
 		catch(err) {
-			client.updateMessage(message, "Failed to reload " + params[0]);
+			message.edit(`Failed to reload ${params[0]}`);
 			log.error(err);
 		}
 
 	}
 };
-
 
 commands.listcmds = {
 	alias: "listcmds",
@@ -72,7 +71,7 @@ commands.listcmds = {
 	hidden: true,
 	action: (client, message) => {
 		var cmdlist = Object.keys(commands);
-		client.updateMessage(message, cmdlist, (err, msg) => client.deleteMessage(msg, {wait: 5000}));
+		message.edit(cmdlist);
 	}
 };
 
@@ -118,14 +117,11 @@ function db_connect() {
 	});
 }
 
-var client = new Discord.Client({autoReconnect: true});
+var client = new Discord.Client();
 
 client.on("message", (message) => {
-	if(message.author.equals(client.user)) {
-		if(config.afk) {
-			config.afk = false;
-			log.info("Disabled AFK");
-		}
+	if(message.author.id === client.user.id) {
+		if(config.afk) config.afk = false;
 		else {
 			clearTimeout(afkTimeout);
 		}
@@ -174,4 +170,4 @@ process.on("SIGINT", () => process.exit(0));
 
 db_connect();
 loadCommands();
-client.loginWithToken(appConfig.apikey, (err) => { if(err) log.error(err); log.info("Logged in with token"); });
+client.login(appConfig.apikey).then(() => log.info("Logged in with token")).catch(log.error);
