@@ -89,10 +89,7 @@ function loadCommands() {
 }
 
 function getParams(content) {
-	var params = content.split(" ");
-	if(content.indexOf(client.user.mention()) > -1) {
-		params.shift();
-	}
+	var params = content.split(" ");	
 	params.shift();
 	return params;
 }
