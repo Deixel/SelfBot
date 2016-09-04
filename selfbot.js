@@ -140,7 +140,7 @@ client.on("message", (message) => {
 		};
 		request(options, (err) => {if(err) log.error(err);});
 	}
-	else if(config.afk && !message.guild && !message.author.id ===client.user) {
+	else if(config.afk && !!message.guild && !message.author.id ===client.user) {
 		log.info("Sent AFK DM from " + message.author.username);
 		let request = require("request");
 		let options = {

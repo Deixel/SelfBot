@@ -2,7 +2,7 @@ module.exports = {
 	alias: "hs",
 	action: (client, message, params) => {
 		if(params.length > 0) {
-			message.edit("Loading...").then((err, msg) => {
+			message.edit("Loading...").then(msg => {
 				var player = params.join("_");
 				var http = require("http");
 				http.get("http://services.runescape.com/m=hiscore/index_lite.ws?player=" + player, function(res) {
