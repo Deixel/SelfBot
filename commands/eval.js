@@ -1,6 +1,6 @@
 module.exports = {
 	alias: "eval",
-	action: (client, message, params, config) => {
+	action: (client, message, params) => {
 		var vm = require("vm");
 		params = params.join(" ");
 		var benchmark = Date.now();

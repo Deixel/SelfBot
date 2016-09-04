@@ -5,6 +5,7 @@ var config =  require("./config");
 var appConfig = config.appConfig;
 config.afk = false;
 var afkTimeout;
+const afkTime = 30 * 60 * 1000;
 
 var connection;
 var commands = {};
@@ -71,7 +72,7 @@ commands.listcmds = {
 	hidden: true,
 	action: (client, message) => {
 		var cmdlist = Object.keys(commands);
-		client.sendMessage(message.channel, cmdlist);
+		client.updateMessage(message, cmdlist, (err, msg) => client.deleteMessage(msg, {wait: 5000}));
 	}
 };
 
@@ -121,11 +122,15 @@ var client = new Discord.Client({autoReconnect: true});
 
 client.on("message", (message) => {
 	if(message.author.equals(client.user)) {
-		if(config.afk) config.afk = false;
+		if(config.afk) {
+			config.afk = false;
+			log.info("Disabled AFK");
+		}
 		else {
 			clearTimeout(afkTimeout);
-			afkTimeout = setTimeout(setAfk, 30000);
 		}
+
+		afkTimeout = setTimeout(setAfk, afkTime);
 		var cmd = commands[message.content.split(" ")[0]];
 		if(cmd != null) {
 			log.info("Running " + message.content);
@@ -141,7 +146,7 @@ client.on("message", (message) => {
 			method: "POST",
 			qs: { "value1": message.author.username, "value2": message.channel.name }
 		};
-		request(options, (err) => {if(err) log.error(err)});
+		request(options, (err) => {if(err) log.error(err);});
 	}
 	else if(config.afk && !message.server && !message.author.equals(client.user)) {
 		log.info("Sent AFK DM from " + message.author.username);
@@ -151,17 +156,18 @@ client.on("message", (message) => {
 			method: "POST",
 			qs: { "value1": message.author.username, "value2": message.cleanContent }
 		};
-		request(options, (err) => {if(err) log.error(err)});
+		request(options, (err) => {if(err) log.error(err);});
 	}
 });
 
 client.on("ready", () => {
-	afkTimeout = setTimeout(setAfk, 30000);
+	afkTimeout = setTimeout(setAfk, afkTime);
 	log.info("Client emitted READY");
 });
 
 function setAfk() {
 	config.afk = true;
+	log.info("Going AFK");
 }
 
 process.on("SIGINT", () => process.exit(0));
